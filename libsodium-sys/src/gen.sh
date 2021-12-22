@@ -4,7 +4,7 @@
 # a whitelist regex to generate entities
 REGEX="(SODIUM|sodium|crypto|randombytes)_.*"
 
-bindgen ../libsodium/src/libsodium/include/sodium.h -o sodium_bindings.rs \
+bindgen /usr/include/sodium.h -o sodium_bindings.rs \
   --ctypes-prefix=libc --use-core \
   --generate=functions,types,vars \
   --no-layout-tests \
