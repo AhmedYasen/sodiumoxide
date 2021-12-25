@@ -1,7 +1,6 @@
 //! Libsodium version functions
 
 use ffi;
-use libc;
 use std::slice;
 use std::str;
 

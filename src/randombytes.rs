@@ -3,6 +3,7 @@
 use ffi;
 #[cfg(not(feature = "std"))]
 use prelude::*;
+use std::convert::TryInto;
 
 /// The number of seed bytes to use for the deterministic RNG functions
 /// [`randombytes_buf_deterministic()`] and

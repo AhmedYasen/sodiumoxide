@@ -4,6 +4,7 @@
 use ffi;
 use libc::c_ulonglong;
 use randombytes::randombytes_into;
+use std::convert::TryInto;
 
 /// Number of bytes in a `Salt`.
 pub const SALTBYTES: usize = ffi::crypto_pwhash_scryptsalsa208sha256_SALTBYTES as usize;

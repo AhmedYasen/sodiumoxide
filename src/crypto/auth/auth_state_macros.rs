@@ -11,13 +11,14 @@
 /// $final_name - A function `f(s: *mut $state_name, t: *u8)` that computes an authenticator tag of length $tagbytes from a $state_name.
 /// $tagbytes   - The number of bytes in an authenticator tag.
 macro_rules! auth_state (($state_name:ident,
-                          $init_name:ident,
-                          $update_name:ident,
-                          $final_name:ident,
-                          $tagbytes:expr) => (
+    $init_name:ident,
+    $update_name:ident,
+    $final_name:ident,
+    $tagbytes:expr) => (
 
 use std::mem;
 use ffi;
+use std::convert::TryInto;
 
 /// Authentication `State`
 ///

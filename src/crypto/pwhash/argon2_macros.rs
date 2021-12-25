@@ -14,6 +14,7 @@ macro_rules! argon2_module (($pwhash_name:ident,
 
 use libc::{c_int, c_ulonglong};
 use randombytes::randombytes_into;
+use std::convert::TryInto;
 
 /// Number of bytes in a `Salt`.
 pub const SALTBYTES: usize = $saltbytes;

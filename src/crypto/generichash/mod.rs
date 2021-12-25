@@ -10,6 +10,7 @@ use ffi::{
 use libc::c_ulonglong;
 use std::mem;
 use std::ptr;
+use std::convert::TryInto;
 
 mod digest;
 pub use self::digest::Digest;

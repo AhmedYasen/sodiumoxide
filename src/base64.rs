@@ -3,6 +3,7 @@ use ffi;
 #[cfg(not(feature = "std"))]
 use prelude::*;
 use std::ptr;
+use std::convert::TryInto;
 
 /// Supported variants of Base64 encoding/decoding
 #[repr(u32)]

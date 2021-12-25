@@ -20,6 +20,7 @@ use randombytes::randombytes_into;
 use std::mem;
 use std::ops::Drop;
 use std::ptr;
+use std::convert::TryInto;
 
 /// Returns the maximum length of an individual message.
 // TODO: use `const fn` when stable

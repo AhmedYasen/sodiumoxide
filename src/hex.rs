@@ -3,6 +3,7 @@ use ffi;
 #[cfg(not(feature = "std"))]
 use prelude::*;
 use std::ptr;
+use std::convert::TryInto;
 
 /// Encodes byte sequence into a hexadecimal string.
 ///

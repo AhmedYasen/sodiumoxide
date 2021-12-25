@@ -17,7 +17,5 @@ mod libc {
     pub type uint64_t = u64;
 }
 
-use libc::{c_void, c_int, c_ulonglong, c_char, size_t, uint64_t};
-
 mod sodium_bindings;
 pub use sodium_bindings::*;

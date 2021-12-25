@@ -1,6 +1,7 @@
 //! `blake2b` is the current default key derivation scheme of `libsodium`.
 
 use ffi;
+use std::convert::TryInto;
 
 /// Number of bytes in a `Key`.
 pub const KEYBYTES: usize = ffi::crypto_kdf_blake2b_KEYBYTES as usize;
