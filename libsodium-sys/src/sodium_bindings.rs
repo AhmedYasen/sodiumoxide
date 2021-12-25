@@ -8,6 +8,7 @@ mod libc {
     pub type c_int = i32;
     pub type c_ulonglong = u64;
     pub type c_char = i8;
+    pub type c_uchar = u8;
     pub type size_t = usize;
     pub type uint64_t = u64;
 }
