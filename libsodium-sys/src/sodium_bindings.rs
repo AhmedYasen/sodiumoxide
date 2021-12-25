@@ -6,6 +6,8 @@ extern crate libc;
 mod libc {
     pub type c_void = u8;
     pub type c_int = i32;
+    pub type c_uint = u32;
+    pub type c_ulong = u32;
     pub type c_ulonglong = u64;
     pub type c_char = i8;
     pub type c_uchar = u8;
