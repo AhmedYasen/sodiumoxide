@@ -25,14 +25,14 @@ use ffi;
 /// The function returns `Err(())` if the padded buffer length would exceed `max_buflen`, or if the
 /// block size is 0. It returns a result containing the new padded length upon success.
 pub fn pad(buf: &mut [u8], unpadded_buflen: usize, blocksize: usize) -> Result<usize, ()> {
-    let mut padded_buflen_p: usize = 0;
+    let mut padded_buflen_p: u32 = 0;
     unsafe {
         if 0 == ffi::sodium_pad(
             &mut padded_buflen_p,
             buf.as_mut_ptr() as *mut _,
-            unpadded_buflen,
-            blocksize,
-            buf.len(),
+            unpadded_buflen.try_into().unwrap(),
+            blocksize.try_into().unwrap(),
+            buf.len().try_into().unwrap(),
         ) {
             Ok(padded_buflen_p)
         } else {
@@ -44,13 +44,13 @@ pub fn pad(buf: &mut [u8], unpadded_buflen: usize, blocksize: usize) -> Result<u
 /// The `unpad()` function computes the original, unpadded length of a message previously padded
 /// using [`pad()`]. The original length is returned upon success.
 pub fn unpad(buf: &[u8], padded_buflen: usize, blocksize: usize) -> Result<usize, ()> {
-    let mut unpadded_buflen_p: usize = 0;
+    let mut unpadded_buflen_p: u32 = 0;
     unsafe {
         if 0 == ffi::sodium_unpad(
             &mut unpadded_buflen_p,
             buf.as_ptr() as *const _,
-            padded_buflen,
-            blocksize,
+            padded_buflen.try_into().unwrap(),
+            blocksize.try_into().unwrap(),
         ) {
             Ok(unpadded_buflen_p)
         } else {

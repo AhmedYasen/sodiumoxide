@@ -5,7 +5,7 @@ use ffi;
 /// optimizations are being applied to the code.
 pub fn memzero(x: &mut [u8]) {
     unsafe {
-        ffi::sodium_memzero(x.as_mut_ptr() as *mut _, x.len());
+        ffi::sodium_memzero(x.as_mut_ptr() as *mut _, x.len().try_into().unwrap());
     }
 }
 
@@ -22,7 +22,7 @@ pub fn memcmp(x: &[u8], y: &[u8]) -> bool {
     if x.len() != y.len() {
         return false;
     }
-    unsafe { ffi::sodium_memcmp(x.as_ptr() as *const _, y.as_ptr() as *const _, x.len()) == 0 }
+    unsafe { ffi::sodium_memcmp(x.as_ptr() as *const _, y.as_ptr() as *const _, x.len().try_into().unwrap()) == 0 }
 }
 
 /// `mlock()` locks memory given region which can help avoiding swapping the
@@ -31,7 +31,7 @@ pub fn memcmp(x: &[u8], y: &[u8]) -> bool {
 /// Operating system might limit the amount of memory a process can `mlock()`.
 /// This function can fail if `mlock()` fails to lock the memory.
 pub fn mlock(x: &mut [u8]) -> Result<(), ()> {
-    let ret = unsafe { ffi::sodium_mlock(x.as_mut_ptr() as *mut _, x.len()) };
+    let ret = unsafe { ffi::sodium_mlock(x.as_mut_ptr() as *mut _, x.len().try_into().unwrap()) };
     if ret == 0 {
         Ok(())
     } else {
@@ -47,7 +47,7 @@ pub fn munlock(x: &mut [u8]) -> Result<(), ()> {
     let ret = unsafe {
         // sodium_munlock() internally calls sodium_memzero() to clear memory
         // region.
-        ffi::sodium_munlock(x.as_mut_ptr() as *mut _, x.len())
+        ffi::sodium_munlock(x.as_mut_ptr() as *mut _, x.len().try_into().unwrap())
     };
     if ret == 0 {
         Ok(())
@@ -66,7 +66,7 @@ pub fn munlock(x: &mut [u8]) -> Result<(), ()> {
 /// will not uphold any security guarantees (i.e. they may break)
 pub fn increment_le(x: &mut [u8]) {
     unsafe {
-        ffi::sodium_increment(x.as_mut_ptr(), x.len());
+        ffi::sodium_increment(x.as_mut_ptr(), x.len().try_into().unwrap());
     }
 }
 
@@ -82,7 +82,7 @@ pub fn increment_le(x: &mut [u8]) {
 pub fn add_le(x: &mut [u8], y: &[u8]) -> Result<(), ()> {
     if x.len() == y.len() {
         unsafe {
-            ffi::sodium_add(x.as_mut_ptr(), y.as_ptr(), x.len());
+            ffi::sodium_add(x.as_mut_ptr(), y.as_ptr(), x.len().try_into().unwrap());
         }
         Ok(())
     } else {

@@ -39,7 +39,7 @@ pub struct State($state_name);
 impl Drop for State {
     fn drop(&mut self) {
         unsafe {
-            ffi::sodium_memzero(&mut self.0 as *mut $state_name as *mut _, mem::size_of_val(&self.0));
+            ffi::sodium_memzero(&mut self.0 as *mut $state_name as *mut _, mem::size_of_val(&self.0).try_into().unwrap());
         }
     }
 }
@@ -49,7 +49,7 @@ impl State {
     pub fn init(k: &[u8]) -> State {
         let mut s = mem::MaybeUninit::uninit();
         let state = unsafe {
-            $init_name(s.as_mut_ptr(), k.as_ptr(), k.len());
+            $init_name(s.as_mut_ptr(), k.as_ptr(), k.len().try_into().unwrap());
             s.assume_init() // s is definitely initialized
         };
         State(state)

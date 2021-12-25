@@ -17,7 +17,7 @@ pub const SEEDBYTES: usize = ffi::randombytes_SEEDBYTES as usize;
 pub fn randombytes(size: usize) -> Vec<u8> {
     unsafe {
         let mut buf = vec![0u8; size];
-        ffi::randombytes_buf(buf.as_mut_ptr() as *mut _, size);
+        ffi::randombytes_buf(buf.as_mut_ptr() as *mut _, size.try_into().unwrap());
         buf
     }
 }
@@ -29,7 +29,7 @@ pub fn randombytes(size: usize) -> Vec<u8> {
 /// from sodiumoxide.
 pub fn randombytes_into(buf: &mut [u8]) {
     unsafe {
-        ffi::randombytes_buf(buf.as_mut_ptr() as *mut _, buf.len());
+        ffi::randombytes_buf(buf.as_mut_ptr() as *mut _, buf.len().try_into().unwrap());
     }
 }
 
@@ -71,7 +71,7 @@ new_type! {
 pub fn randombytes_buf_deterministic(size: usize, seed: &Seed) -> Vec<u8> {
     unsafe {
         let mut buf = vec![0u8; size];
-        ffi::randombytes_buf_deterministic(buf.as_mut_ptr() as *mut _, size, seed.0.as_ptr());
+        ffi::randombytes_buf_deterministic(buf.as_mut_ptr() as *mut _, size.try_into().unwrap(), seed.0.as_ptr());
         buf
     }
 }
@@ -83,7 +83,7 @@ pub fn randombytes_buf_deterministic(size: usize, seed: &Seed) -> Vec<u8> {
 /// fills `buf` with `buf.len()` bytes instead of returning a value.
 pub fn randombytes_buf_deterministic_into(buf: &mut [u8], seed: &Seed) {
     unsafe {
-        ffi::randombytes_buf_deterministic(buf.as_mut_ptr() as *mut _, buf.len(), seed.0.as_ptr());
+        ffi::randombytes_buf_deterministic(buf.as_mut_ptr() as *mut _, buf.len().try_into().unwrap(), seed.0.as_ptr());
     }
 }
 

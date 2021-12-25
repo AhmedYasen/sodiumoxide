@@ -22,8 +22,8 @@ pub enum Variant {
 pub fn encode<T: AsRef<[u8]>>(bin: T, variant: Variant) -> String {
     let bin = bin.as_ref();
     // SAFETY: `Variant` contains only valid variant codes.
-    let encoded_len = unsafe { ffi::sodium_base64_encoded_len(bin.len(), variant as _) };
-    let mut b64 = vec![0; encoded_len];
+    let encoded_len = unsafe { ffi::sodium_base64_encoded_len(bin.len().try_into().unwrap(), variant as _) };
+    let mut b64 = vec![0; encoded_len.try_into().unwrap()];
 
     // SAFETY: `sodium_base64_encoded_len` ensures space for `bin.len()` bytes
     // and `Variant` contains only valid variant codes
@@ -31,9 +31,9 @@ pub fn encode<T: AsRef<[u8]>>(bin: T, variant: Variant) -> String {
     unsafe {
         ffi::sodium_bin2base64(
             b64.as_mut_ptr() as *mut _,
-            b64.len(),
+            b64.len().try_into().unwrap(),
             bin.as_ptr(),
-            bin.len(),
+            bin.len().try_into().unwrap(),
             variant as _,
         );
         b64.pop();
@@ -58,9 +58,9 @@ pub fn decode<T: AsRef<[u8]>>(b64: T, variant: Variant) -> Result<Vec<u8>, ()> {
     unsafe {
         let rc = ffi::sodium_base642bin(
             bin.as_mut_ptr(),
-            bin.len(),
+            bin.len().try_into().unwrap(),
             b64.as_ptr() as *const _,
-            b64.len(),
+            b64.len().try_into().unwrap(),
             ptr::null(),
             &mut bin_len,
             ptr::null_mut(),
@@ -69,7 +69,7 @@ pub fn decode<T: AsRef<[u8]>>(b64: T, variant: Variant) -> Result<Vec<u8>, ()> {
         if rc != 0 {
             return Err(());
         }
-        bin.truncate(bin_len);
+        bin.truncate(bin_len.try_into().unwrap());
         Ok(bin)
     }
 }

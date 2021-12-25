@@ -130,7 +130,7 @@ pub fn derive_key<'a>(
             passwd.len() as c_ulonglong,
             sb as *const _,
             opslimit as c_ulonglong,
-            memlimit,
+            memlimit.try_into().unwrap(),
             VARIANT as c_int)
     };
 
@@ -167,7 +167,7 @@ pub fn pwhash(
             passwd.as_ptr() as *const _,
             passwd.len() as c_ulonglong,
             opslimit as c_ulonglong,
-            memlimit)
+            memlimit.try_into().unwrap())
     };
 
     match res {

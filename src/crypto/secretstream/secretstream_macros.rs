@@ -25,7 +25,7 @@ use std::ptr;
 // TODO: use `const fn` when stable
 // (https://github.com/rust-lang/rust/issues/24111).
 pub fn messagebytes_max() -> usize {
-    unsafe { $messagebytes_max() }
+    unsafe { $messagebytes_max().try_into().unwrap() }
 }
 
 /// Number of bytes in a `Key`.

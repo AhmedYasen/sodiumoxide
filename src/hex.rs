@@ -18,9 +18,9 @@ pub fn encode<T: AsRef<[u8]>>(bin: T) -> String {
     unsafe {
         ffi::sodium_bin2hex(
             hex.as_mut_ptr() as *mut _,
-            hex.len(),
+            hex.len().try_into().unwrap(),
             bin.as_ptr(),
-            bin.len(),
+            bin.len().try_into().unwrap(),
         );
         hex.pop();
         String::from_utf8_unchecked(hex)
@@ -45,9 +45,9 @@ pub fn decode<T: AsRef<[u8]>>(hex: T) -> Result<Vec<u8>, ()> {
     unsafe {
         let rc = ffi::sodium_hex2bin(
             bin.as_mut_ptr(),
-            bin.len(),
+            bin.len().try_into().unwrap(),
             hex.as_ptr() as *const _,
-            hex.len(),
+            hex.len().try_into().unwrap(),
             ptr::null(),
             &mut bin_len,
             ptr::null_mut(),
@@ -55,7 +55,7 @@ pub fn decode<T: AsRef<[u8]>>(hex: T) -> Result<Vec<u8>, ()> {
         if rc != 0 {
             return Err(());
         }
-        bin.truncate(bin_len);
+        bin.truncate(bin_len.try_into().unwrap());
         Ok(bin)
     }
 }

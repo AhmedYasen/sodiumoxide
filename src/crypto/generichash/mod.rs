@@ -51,7 +51,7 @@ impl State {
         let mut state = mem::MaybeUninit::uninit();
 
         let result =
-            unsafe { crypto_generichash_init(state.as_mut_ptr(), key_ptr, key_len, out_len) };
+            unsafe { crypto_generichash_init(state.as_mut_ptr(), key_ptr, key_len.try_into().unwrap(), out_len.try_into().unwrap()) };
 
         if result == 0 {
             // result == 0 and state is initialized
@@ -80,7 +80,7 @@ impl State {
     pub fn finalize(mut self) -> Result<Digest, ()> {
         let mut result = Digest::new(self.out_len);
         let rc = unsafe {
-            crypto_generichash_final(&mut self.state, result.data.as_mut_ptr(), result.len)
+            crypto_generichash_final(&mut self.state, result.data.as_mut_ptr(), result.len.try_into().unwrap())
         };
         if rc == 0 {
             Ok(result)
@@ -108,11 +108,11 @@ pub fn hash(data: &[u8], out_len: Option<usize>, key: Option<&[u8]>) -> Result<D
     let rc = unsafe {
         crypto_generichash(
             result.data.as_mut_ptr(),
-            result.len,
+            result.len.try_into().unwrap(),
             data.as_ptr(),
             data.len() as c_ulonglong,
             key_ptr,
-            key_len,
+            key_len.try_into().unwrap(),
         )
     };
     if rc == 0 {

@@ -114,7 +114,7 @@ pub fn derive_key<'a>(
             passwd.len() as c_ulonglong,
             salt.0.as_ptr(),
             opslimit as c_ulonglong,
-            memlimit,
+            memlimit.try_into().unwrap(),
         )
     } == 0
     {
@@ -178,7 +178,7 @@ pub fn pwhash(
             passwd.as_ptr() as *const _,
             passwd.len() as c_ulonglong,
             opslimit as c_ulonglong,
-            memlimit,
+            memlimit.try_into().unwrap(),
         )
     } == 0
     {
