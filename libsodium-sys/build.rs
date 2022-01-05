@@ -336,7 +336,7 @@ fn build_libsodium() {
 
     // Determine build target triple
     let mut out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
-    let target = env::var("TARGET").unwrap();
+    let target = env::var("LIB_SODIUM_TARGET").unwrap();
     let profile = env::var("PROFILE").unwrap();
 
     // Avoid issues with paths containing spaces by falling back to using a tempfile.
